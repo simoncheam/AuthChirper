@@ -1,10 +1,10 @@
 import * as express from 'express';
 
 import chirpsDB from '../../database/queries/chirps';
+import chirpTagsDB from '../../database/queries/chirptags';
 
 import { ReqUser } from '../../types'
 //import { tokenCheck } from '../../middlewares/tokenCheck.mw'
-
 
 const router = express.Router();
 
@@ -80,10 +80,10 @@ router.post('/', async (req: ReqUser, res) => {
 router.put('/:id', async (req: ReqUser, res) => {
 
     const { title, content, tagid } = req.body;
-    console.log(`req.user.userid : ${req.user.userid}`);
+    console.log(`req.user.userid : ${req.user.id}`);
 
     //define userid by req.user
-    const userid = req.user.userid;
+    const userid = req.user.id;
 
     //define blog userid by blog query
     const chirp_id = req.params.id;
@@ -96,7 +96,6 @@ router.put('/:id', async (req: ReqUser, res) => {
     if (userid != chirp_userid){
         return res.status(403).json({ message: "You are not authorized to edit this blog. You can only edit blogs you create." })
 
-   
     }
 
         console.log({ title, content, userid });// WORKS!
@@ -116,9 +115,6 @@ router.put('/:id', async (req: ReqUser, res) => {
 
         const blogid = id;
 
-        // ! need to update
-       // await blogtagz.update(tagid, blogid)
-
 
         res.status(201).json({ message: "Updated Blog!" });
 
@@ -129,7 +125,6 @@ router.put('/:id', async (req: ReqUser, res) => {
 
 });
 
-
 router.delete('/:id',  async (req: ReqUser, res) => {
 
     const id = Number(req.params.id);
@@ -137,27 +132,25 @@ router.delete('/:id',  async (req: ReqUser, res) => {
     const { tagid } = req.body;
 
     //define userid by req.user
-    const userid = req.user.userid;
+    const userid = req.user.id;
 
     //define blog userid by blog query
     const chirp_id = req.params.id;
     const [one_chirp] = (await chirpsDB.get_one_by_id(Number(chirp_id)))[0]; //grab item at index pos 0
 
-    const { a_id } = one_chirp;
-    let blog_userid = a_id;
+    const { u_id } = one_chirp;
+    let chirp_userid = u_id;
 
-    if (userid != blog_userid){
+    if (userid != chirp_userid){
         return res.status(403).json({ message: "You are not authorized to edit this blog. You can only edit blogs you create." })
 
     }
 
     try {
 
-        // we need to delete: 
+        await chirpTagsDB.destroy(id) 
 
-        await blogtagz.destroy(id) //needs to be deleted first tagid: BlogTags['tagid'], blogid: BlogTags['blogid']
-
-        await blogz.destroy(id, userid)  /// need to delete blogtag id AND blogid( need blogtag query to delete blogid)  , 
+        await chirpsDB.destroy(id, userid)  /// need to delete blogtag id AND blogid( need blogtag query to delete blogid)  , 
 
         res.status(200).json({ message: "Deleted Blog!" });
 

@@ -2,6 +2,16 @@ import { Request } from 'express';
 import { JwtPayload } from 'jsonwebtoken';
 import {UsersTable} from '../database/models';
 
+
+export interface ReqUser extends Request {
+    user?: UsersTable | JwtPayload;
+}
+
+export interface Payload extends UsersTable {
+    userid?: number;
+    role?:number;
+}
+
 export interface MySQL_Default_Response {
     insertId:number;  
     affectedRows: number;
@@ -19,6 +29,7 @@ export interface Chirps {
     id?: number;
     title?: string;
     content?: string;
+    location?: string;
     userid: number;
     _created?: string;
     
