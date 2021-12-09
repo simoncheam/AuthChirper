@@ -8,7 +8,7 @@ export interface ReqUser extends Request {
 }
 
 export interface Payload extends UsersTable {
-    userid?: number;
+    id?: number;
     role?:number;
 }
 
@@ -57,6 +57,6 @@ export interface ChirpsJoined {
     chirp_created: string;
     u_name: string;
     u_email: string;
-    u_id: number;
+    u_id?: number;
     _created?: string;
 }

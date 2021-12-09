@@ -8,19 +8,19 @@ const create = (new_chirp: Chirps) => {
 }
 
 
-const get_all = () => Query<ChirpsJoined[]>
+const get_all = () => Query<Chirps[]>
     (`SELECT * FROM Chirps`);
 
-
+//DONE
 const get_one_by_id = (id:number)=>Query<[ChirpsJoined[], MysqlResponse]>
 (`CALL spGetChirpById(?) `,[id]);
 
-
+//DONE
 const get_all_by_tagid = (id:number)=>Query<ChirpsJoined[]>
 (`CALL spGetChirpsByTagId(?) `,[id]);
 
-
-const get_all_by_authorid = (id:number)=>Query<ChirpsJoined[]>
+//DONE
+const get_all_by_userid = (id:number)=>Query<ChirpsJoined[]>
 (`CALL spGetChirpsByUserId(?) `,[id]);
 
 
@@ -33,6 +33,8 @@ const destroy = (id: Chirps['id'], userid: number) => Query("DELETE FROM Chirps 
 export default {
     get_all,
     get_one_by_id,
+    get_all_by_tagid,
+    get_all_by_userid,
     create,
     update,
     destroy

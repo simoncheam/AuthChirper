@@ -5,9 +5,9 @@ const get_all = () => Query<Users[]>("SELECT * FROM Users");
 
 const get_one_by_id = (id: number) => Query<Users[]>("SELECT * FROM Users WHERE id =?", [id]);
 
-const create = (new_author: Users) => Query('INSERT INTO Users SET ?', [new_author]);
+const create = (new_user: Users) => Query('INSERT INTO Users SET ?', [new_user]);
 
-const update = (author: Users, id: Users['id']) => Query('UPDATE Users SET ? WHERE id=?', [author, id]);
+const update = (user: Users, id: Users['id']) => Query('UPDATE Users SET ? WHERE id=?', [user, id]);
 
 const destroy = (id: Users['id']) => Query('DELETE FROM Users WHERE id=?', [id]);
 
@@ -22,5 +22,4 @@ export default {
     update,
     destroy,
     getUserBy
-
 };

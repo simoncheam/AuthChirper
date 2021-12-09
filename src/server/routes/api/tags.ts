@@ -1,15 +1,14 @@
 import * as express from 'express';
-import tagsDB from '../../database/queries/';
+import tagsDB from '../../database/queries/tags';
 import { ReqUser, Tags } from '../../types';
 
-import {tokenCheck} from '../../middlewares/tokenCheck.mw'
+// import {tokenCheck} from '../../middlewares/tokenCheck.mw'
 
 const router = express.Router();
 
-router.route('*')
-.put(tokenCheck)
-.delete(tokenCheck)
-
+// router.route('*')
+// .put(tokenCheck)
+// .delete(tokenCheck)
 
 
 router.get('/', async (req, res) => {
@@ -23,7 +22,7 @@ router.get('/', async (req, res) => {
 });
 
 
-router.post('/', tokenCheck, async (req: ReqUser, res) => {
+router.post('/', async (req: ReqUser, res) => {
 
 
     const { name }: Tags = req.body;
@@ -42,7 +41,7 @@ router.post('/', tokenCheck, async (req: ReqUser, res) => {
 });
 
 
-//delete
+
 
 router.delete('/:id', async (req, res) => {
 

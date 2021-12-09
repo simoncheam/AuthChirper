@@ -16,12 +16,9 @@ const update = (tagid: ChirpTags['tagid'], chirpid: ChirpTags['chirpid']) => Que
 
 const destroy = (chirpid: ChirpTags['chirpid']) => Query("DELETE FROM ChirpTags WHERE chirpid=?", [chirpid]);
 
-
-
 export default {
     get_all,
     create,
     destroy,
     update
-
 };

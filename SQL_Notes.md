@@ -1,4 +1,5 @@
 
+## Table Setup
 
 ### Users
 
@@ -64,3 +65,76 @@ describe Users;
 describe ChirpTags;
 describe Chirps;
 describe Tags;
+
+
+## StoredProcedures Setup
+
+
+// get_one_by_id -- SP #1
+### spGetChirpById(?)
+
+CALL spGetChirpById();
+
+DELIMITER //
+CREATE PROCEDURE spGetChirpById(spchirpid INT)
+	BEGIN
+		SELECT ChirpTags.chirpid as chirp_id, ChirpTags.tagid as tag_id,
+        c.content as content, c._created as chirp_created, c.location as location,
+        u.name as u_name, u.email as u_email, 
+        t.name as tag_name, t._created as tag_created 
+        FROM ChirpTags
+            JOIN Tags t
+            ON t.id=ChirpTags.tagid
+                JOIN Chirps c
+                ON c.id=ChirpTags.chirpid
+                    JOIN Users u
+                    ON c.userid=u.id
+                    WHERE ChirpTags.chirpid=spchirpid;
+    END //
+DELIMITER //;
+
+
+// get_all_by_tagid -- SP #2
+### spGetChirpsByTagId(?)
+
+CALL spGetChirpsByTagId();
+
+DELIMITER //
+CREATE PROCEDURE spGetChirpsByTagId(sptagid INT)
+	BEGIN
+    SELECT ChirpTags.chirpid as chirp_id, ChirpTags.tagid as tag_id, c.content as content, c._created as chirp_created,
+u.name as u_name, u.email as u_email, t.name as tag_name, t._created as tag_created 
+FROM ChirpTags
+JOIN Tags t
+ON t.id=ChirpTags.tagid
+JOIN Chirps c
+ON c.id=ChirpTags.chirpid
+JOIN Users u
+ON c.userid=u.id
+WHERE ChirpTags.tagid=sptagid
+ORDER BY c._created DESC;
+END //
+DELIMITER //;
+
+
+
+// get_all_by_userid -- SP #3
+
+### spGetChirpsByUserId();
+
+DELIMITER //
+CREATE PROCEDURE spGetChirpsByUserId(spuserid INT)
+BEGIN
+	SELECT ChirpTags.chirpid as chirp_id, ChirpTags.tagid as tag_id , c.content as content, c._created as chirp_created,
+		Users.id as u_id, Users.name as u_name, Users.email as u_email, t.name as tag_name, t._created as tag_created 
+		FROM ChirpTags
+		JOIN Tags t
+		ON t.id=ChirpTags.tagid
+		JOIN Chirps c
+		ON c.id=ChirpTags.chirpid
+		JOIN Users
+		ON c.userid=Users.id
+			WHERE Users.id=spuserid
+            ORDER BY c._created DESC;
+END//
+DELIMITER //;

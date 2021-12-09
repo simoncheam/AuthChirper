@@ -38,27 +38,33 @@ router.get('/', async (req, res) => {
 
 
 
-router.get('/:user_id', async (req: ReqUser, res)=>{
+router.get('/:user_id', async (req: ReqUser, res) => {
 
 
     const id = req.params.user_id;
+    console.log('GET user by ID!');
+
 
     try {
 
         const [one_user] = await usersDB.get_one_by_id(Number(id));
-        delete one_user.password;
 
         if (!one_user) {
             res.status(404).json({ message: "User not found!" })
+
         } else {
-            res.status(200).json({ message: `Welcome ! `, one_user });
+
+            delete one_user.password;
+            console.log(one_user);
+
+            res.status(200).json({ message: `User Found! `, one_user });
         }
-        
+
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: "A server errors occurred", error: error.sqlMessage });
 
-        
+
     }
 
 })
@@ -66,16 +72,16 @@ router.get('/:user_id', async (req: ReqUser, res)=>{
 
 router.post('/', async (req, res) => {
 
-    const { name, email }: Users = req.body;
+    const { name, email, password }: Users = req.body;
 
-    if (!name || !email) {  // input validation
+    if (!name || !email || !password) {  // input validation
         return res.status(400).json({ message: "Fill out everything!" })
     }
 
     try {
 
-        const userResults = await usersDB.create({ name, email })
-        res.status(201).json({ message: "Chirp created", id: userResults.insertId });
+        const userResults = await usersDB.create({ name, email, password })
+        res.status(201).json({ message: "User created", id: userResults.insertId });
 
     } catch (error) {
         res.status(500).json({ message: " A server error occurred", error: error.sqlMessage });
@@ -90,14 +96,16 @@ router.put('/:id', async (req, res) => {
 
     const id = Number(req.params.id);
 
-    const { name, email }: Users = req.body;
+    const { name, email, password }: Users = req.body;
 
     if (!name || !email) {  // input validation
         return res.status(400).json({ message: "Fill out everything!" })
     }
 
     try {
-        const userResults = await usersDB.update({ id, name, email }, id)
+        const userResults = await usersDB.update({ id, name, email, password }, id)
+        res.status(201).json({ message: "Chirp updated", id: userResults.insertId });
+
 
     } catch (error) {
         res.status(500).json({ message: "A server errors occurred", error: error.sqlMessage });

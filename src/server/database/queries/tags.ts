@@ -11,10 +11,8 @@ const create = (new_tag: Tags) => Query(
 const destroy = (id: Tags['id']) => Query(
     `DELETE FROM Tags WHERE id=?`, [id]);
 
-
 export default {
     get_all,
     create,
     destroy
-
 };
