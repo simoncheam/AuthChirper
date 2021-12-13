@@ -8,7 +8,6 @@ import config from '../config';
 import usersDB from '../database/queries/users';
 
 
-
 export function configurePassport(app: Application) {
 
     passport.serializeUser((user: Users, done) => {
@@ -34,12 +33,11 @@ export function configurePassport(app: Application) {
                     if (!email || !password) return done("Missing one or more fields", false);
 
                     const [user] = await usersDB.getUserBy('email', email);
-                    console.log('console user: ');
-                    console.log(user);
+                   
 
                     if (!user) return done({ message: " invalid credentials" }, false);
 
-                    // Q: compare of comparesync?
+                    // Q: compare of comparesync? A: use compare which is async
                     const isMatch = await bcrypt.compare(password, user?.password);
 
                     console.log('BCRYPT - compare');

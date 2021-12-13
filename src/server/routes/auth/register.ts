@@ -17,7 +17,8 @@ router.post('/', async (req, res) => {
 
             //insert new user into db
             const result = await usersDB.create(newUser);
-            result.insertId  // Q: why? A:
+
+            result.insertId  // jwt needs userid for token
 
             console.log(result);
 

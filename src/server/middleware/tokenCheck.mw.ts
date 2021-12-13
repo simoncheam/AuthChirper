@@ -24,6 +24,8 @@ export function tokenCheck(req: ReqUser, res: Response, next: NextFunction) {
 
         }
 
+        // !!! add in edge case check where user may not exist
+
         if(user) {
 
             console.log('Token is good!');
@@ -32,6 +34,6 @@ export function tokenCheck(req: ReqUser, res: Response, next: NextFunction) {
         }
         next();
 
-    })(req, res, next)  // Q: we may need to review this...
+    })(req, res, next)  //passing into passport authenticate
 
 };

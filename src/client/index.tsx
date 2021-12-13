@@ -3,4 +3,10 @@ import { render } from 'react-dom';
 import App from './App';
 import './scss/app';
 
-render(<App />, document.getElementById("root"));
+render(
+<React.StrictMode>
+
+<App /> 
+</React.StrictMode>,
+
+document.getElementById("root"));

@@ -1,64 +1,109 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { createGlobalStyle, ThemeProvider } from 'styled-components';
 
-/* HOOK REACT EXAMPLE */
-const App = (props: AppProps) => {
-	const [greeting, setGreeting] = useState<string>('');
+import Navbar from './components/Navbar';
+import Chirps from './views/Chirps';
+import Login from './views/Login';
+import NotFound from './views/NotFound';
+import Register from './views/Register';
 
-	useEffect(() => {
-		async function getGreeting() {
-			try {
-				const res = await fetch('/api/hello');
-				const greeting = await res.json();
-				setGreeting(greeting);
-			} catch (error) {
-				console.log(error);
-			}
-		}
-		getGreeting();
-	}, []);
+import LightTheme from './themes/light';
+import DarkTheme from './themes/dark';
+import Home from './views/Home';
+import { string } from 'prop-types';
+import Create from './views/Create';
 
-	return (
-		<main className="container my-5">
-			<h1 className="text-primary text-center">Hello {greeting}!</h1>
-		</main>
-	);
+const theme = {
+//	primaryColor: '#f8049c',
+	primaryColor: '#0091ea',
+
+
+	secondaryColor: '#fdd54f'
 };
 
-interface AppProps {}
+/* this is how we can set paragraph styles */
+const GlobalStyle = createGlobalStyle<ThemeProps>`
 
-/* CLASS REACT EXAMPLE */
-// class App extends React.Component<IAppProps, IAppState> {
-// 	constructor(props: IAppProps) {
-// 		super(props);
-// 		this.state = {
-// 			name: null
-// 		};
-// 	}
+body{
+  
+  background: ${p => p.theme.bodyBackgroundColor};
+  min-height: 100vh;
+  margin: 0;
+  color: ${p => p.theme.bodyFontColor};
+  font-family: 'Open Sans';
+}
+  
+`;
 
-// 	async componentDidMount() {
-// 		try {
-// 			let r = await fetch('/api/hello');
-// 			let name = await r.json();
-// 			this.setState({ name });
-// 		} catch (error) {
-// 			console.log(error);
-// 		}
-// 	}
+interface ThemeProps {
+	
+	bodyBackgroundColor?: string,
+	bodyFontColor?: string,
+	
 
-// 	render() {
-// 		return (
-// 			<main className="container my-5">
-// 				<h1 className="text-primary text-center">Hello {this.state.name}!</h1>
-// 			</main>
-// 		);
-// 	}
-// }
+};
 
-// export interface IAppProps {}
 
-// export interface IAppState {
-// 	name: string;
-// }
+
+
+
+const App = () => {
+
+	const [theme, setTheme] = useState(LightTheme)
+
+
+
+	return (
+		
+			<ThemeProvider theme={{
+				...theme, setTheme: () => {
+					setTheme(s => s.id === 'light' ? DarkTheme : LightTheme);
+				}
+			}} >
+
+
+
+				<GlobalStyle />
+				<BrowserRouter>
+					{/* <Navbar /> */}
+
+					
+						<Routes>
+
+
+							{/* Home */}
+							<Route path="/" element={<Home />}></Route>
+
+							{/* Register */}
+							<Route path="/register" element={<Register />}></Route>
+
+							{/* Login */}
+							<Route path="/login" element={<Login />}></Route>
+
+							{/* Create */}
+							<Route path="/create" element={<Create />}></Route>
+
+							{/* NotFound */}
+							<Route path="*" element={<NotFound />}></Route>
+
+						</Routes>
+
+
+					
+				</BrowserRouter>
+			</ThemeProvider>
+
+		
+	)
+}
+
+
+
+
+interface AppProps { }
+
+
 
 export default App;

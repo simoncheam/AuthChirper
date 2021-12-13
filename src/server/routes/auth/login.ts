@@ -12,12 +12,15 @@ router.post('/', passport.authenticate('local'), async ( req: ReqUser, res) => {
 console.log('INSIDE LOGIN ROUTE!');
 
     try {
+
+        //jwt requires object with all items for token
         
         const token = jwt.sign(
             { userid: req.user.id, email: req.user.email},
             config.jwt_config.secret,
             {expiresIn: config.jwt_config.expiration}
         );
+        
         console.log(token);
 
         res.status(200).json({message: "successful login!", token});

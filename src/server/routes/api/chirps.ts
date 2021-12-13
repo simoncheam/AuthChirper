@@ -52,15 +52,15 @@ router.get('/:id', async (req, res) => {
 router.post('/', async (req: ReqUser, res) => {
     console.log('INSIDE POST BLOCK');
 
-    //¸const userid = req.user.id;
+    const userid = req.user.id;
 
     // need to move user id back to req user after auth done
-    const { userid, tagid, content, location } = req.body;
+    const {  tagid, content, location } = req.body;
 
     console.log(`userid is: ${userid}`);
 
     //input validation
-    if (!content || !tagid) {  //    "userid": 1,
+    if (!content || !tagid || !userid) {  //    "userid": 1,
         return res.status(400).json({ message: "Fill out everything!" })
     }
 
@@ -118,10 +118,10 @@ router.put('/:id', async (req: ReqUser, res) => {
         const id = Number(req.params.id);
         await chirpsDB.update({ location, content, userid }, id, userid);
 
-        const blogid = id;
+       
 
 
-        res.status(201).json({ message: "Updated Blog!" });
+        res.status(201).json({ message: "Updated Chirp!" });
 
     } catch (error) {
 
@@ -145,7 +145,7 @@ router.delete('/:id',  async (req: ReqUser, res) => {
 
         await chirpTagsDB.destroy(id) 
 
-        await chirpsDB.destroy(id, userid)  /// need to delete blogtag id AND blogid( need blogtag query to delete blogid)  , 
+        await chirpsDB.destroy(id, userid)  
 
         res.status(200).json({ message: "Deleted Chirp!" });
 
