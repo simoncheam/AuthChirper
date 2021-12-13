@@ -19,8 +19,9 @@ const theme = {
 //	primaryColor: '#f8049c',
 	primaryColor: '#0091ea',
 
+	secondaryColor: '#ffa500'
 
-	secondaryColor: '#fdd54f'
+	//secondaryColor: '#fdd54f'
 };
 
 /* this is how we can set paragraph styles */
@@ -28,7 +29,7 @@ const GlobalStyle = createGlobalStyle<ThemeProps>`
 
 body{
   
-  background: ${p => p.theme.bodyBackgroundColor};
+  background: ${p => p.theme.bodyBackgroundColor };
   min-height: 100vh;
   margin: 0;
   color: ${p => p.theme.bodyFontColor};

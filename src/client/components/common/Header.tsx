@@ -117,6 +117,12 @@ const Header = () => {
                     Login
                 </StyledLink>
 
+                <StyledLink to="/create" isActive={pathname === '/create'} >
+                    Create
+                </StyledLink>
+
+
+
             {/* If logged in show additional links */}
 
 

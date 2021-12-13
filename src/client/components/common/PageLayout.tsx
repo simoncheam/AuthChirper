@@ -8,10 +8,10 @@ const Content = styled.main`
     padding: 16px;
     box-sizing: border-box;
     font-family: 'Open Sans';
+    justify-content: center;
 
     h1, h2, h3, h4, h5, h6{
         font-family: 'Open Sans';
-
     }
 `
 

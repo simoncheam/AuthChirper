@@ -2,7 +2,7 @@ import React from 'react'
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-import { Chirps } from '../client_types'
+import { Chirps, Tags } from '../client_types'
 import { Button, Input, PageLayout } from '../components/common';
 import { APIService } from '../services/APIService';
 import { string } from 'prop-types';
@@ -16,6 +16,7 @@ const Form = styled.form`
     box-sizing: border-box;
     color: black;
     border-radius: 4px;
+    justify-content: center;
 
     .alt-text{
         text-align: center;
@@ -35,18 +36,28 @@ const Form = styled.form`
 const Create = () => {
 
     // State Setting      ------------------------
-    const [formFields, setFormFields] = useState({ content: string, tag: string, location: string });
+
+    //Q: clarify for using for multiple routes? chirps and tags, is it appropriate to combine or separate
+
+    const [formFields, setFormFields] = useState({
+         content: string, 
+         tag: 0, 
+         location: string });
 
     const [loading, setLoading] = useState(false);
+   // const [selectedTagId, setSelectedTagId] = useState(0);
+    
+    const [tags, setTags] = useState<Tags[]>([]);
+
 
     //const [isAuthed, setIsAuthed] = useState(null);
 
     let nav = useNavigate();
     const loc = useLocation()
 
-
-
     //   Handle Input Change    ------------------------
+
+    //Q: clarify configuration handling multiple states
 
     const handleInputChange = (e) => {
         e.persist();
@@ -54,19 +65,28 @@ const Create = () => {
             ...s,
             [e.target.name]: e.target.value
         }))
-
+        
     }
+    setSelectedTagId(Number(e.target.value))
+    console.log('dgdzrfg');
 
     //                 ------------------------
 
     //const [chirps, setChirps] = useState<Chirps[]>([]);
     //add API service
+    
     useEffect(() => {
 
-        return () => {
 
-        }
+        APIService(`/api/tags`)
+        .then((t) => {
+            setTag(t)
+        })
+        .catch(e => console.log(e))
+
     }, [])
+
+    
 
 
     const handleSubmit = (e: React.MouseEvent<HTMLFormElement>) => {
@@ -80,10 +100,10 @@ const Create = () => {
 
         APIService('/api/chirps', 'POST',
             {
-                
+
                 content: content,
-                tagid: tag,
-                location: location
+                location: location,
+                tagid: selectedTagId
             })
             .then(data => {
                 console.log(data);
@@ -95,54 +115,72 @@ const Create = () => {
                 nav(`/login`)
             })
 
-
-
-
     }
 
     //                 ------------------------
 
     return (
-        <PageLayout>
+        <PageLayout >
 
-            <h1 className="display-3 m-5 text-center">Create</h1>
+            <h1 className="display-3 m-10 text-center">Create</h1>
 
-            <Form onSubmit={handleSubmit}>
-                <span>What's on your mind?</span>
+            <div className="row justify-content-center">
 
-                {/* content */}
-                <Input
-                    value={formFields.content}
-                    onChange={handleInputChange}
-                    name="content"
-                    type="text"
-                    placeholder="your chirp"
-                />
-                {/* tag */}
-                <Input
-                    value={formFields.tag}
-                    onChange={handleInputChange}
-                    name="tag"
-                    type="text"
-                    placeholder="Add a #hashtag!"
-                />
+                <Form onSubmit={handleSubmit} >
+                    <span>What's on your mind?</span>
+
+                    {/* content */}
+                    <Input
+                        value={formFields.content}
+                        onChange={handleInputChange}
+                        name="content"
+                        type="text"
+                        placeholder="your chirp"
+                    />
 
 
-                {/* Location */}
-                <Input
-                    value= 'FL'//{formFields.location}
-                    onChange={handleInputChange}
-                    name="location"
-                    type="text"
-                    placeholder="Where are you writing from"
-                />
-                <Button large type="submit" disabled={loading}>
-                    {loading ? 'Posting...' : 'Post Your Chirp'}
-                </Button>
+                    {/* tag */}
+                    {/* <Input
+                        value={formFields.tag}
+                        onChange={handleInputChange}
+                        name="tag"
+                        type="text"
+                        placeholder="Add a #hashtag!"
+                    /> */}
+
+                    <label className="row" >🏷 Tag</label>
+                    <select value={selectedTagId} onChange={handleInputChange} className="form-control">
+
+                        <option value={0}> Select a Tag for your Chirp</option>
+
+                        {tag.map(t => (
+                            <option key={`tag-option-${t.id}`} value={t.id}>
+
+                                #{t.name}
+                            </option>
+                        ))}
+                    </select>
 
 
 
-            </Form>
+
+                    {/* Location */}
+                    <Input
+                        value={formFields.location}
+                        onChange={handleInputChange}
+                        name="location"
+                        type="text"
+                        placeholder="Where are you writing from"
+                    />
+                    <Button large type="submit" disabled={loading}>
+                        {loading ? 'Posting...' : 'Post Your Chirp'}
+                    </Button>
+
+
+
+                </Form>
+
+            </div>
 
         </PageLayout>
     )

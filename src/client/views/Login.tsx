@@ -123,6 +123,10 @@ const Login = (LoginProps) => {
         <PageLayout>
 
 
+            <h1 className="display-3 m-10 text-center">Start Here</h1>
+
+            <div className="row justify-content-center">
+
 
             <Form onSubmit={handleSubmit}>
 
@@ -166,6 +170,8 @@ const Login = (LoginProps) => {
 
 
             </Form>
+
+            </div>
 
 
         </PageLayout>
