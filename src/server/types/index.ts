@@ -4,7 +4,23 @@ import {UsersTable} from '../database/models';
 
 
 export interface ReqUser extends Request {
-    user?: UsersTable | JwtPayload;
+    user?: Users ;
+}
+
+export interface Users {
+    id?: number;
+    name?: string;
+    email?: string;
+    password?: string;
+    _created?: string 
+}
+
+
+
+export interface TokenUser extends Users {
+    pizza?: 'Hawaiian';
+    userid?: number; //this works
+    id?: number //trying this??
 }
 
 export interface Payload extends UsersTable {
@@ -17,13 +33,6 @@ export interface MySQL_Default_Response {
     affectedRows: number;
 }
 
-export interface Users {
-    id?: number;
-    name?: string;
-    email?: string;
-    password?: string;
-    _created?: string 
-}
 
 export interface Chirps {
     id?: number;

@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components';
 import PropTypes from 'prop-types';
 
+//bulk styles using css helper
 const largeStyles = ({ large }) => {
 
     if (large) {
@@ -27,7 +28,7 @@ const Button = styled.button<ButtonProps>`
     background: ${p => p.secondary ? p.theme.secondaryColor : p.theme.primaryColor} ;
     font-weight: bold;
 
-    ${largeStyles}
+    ${p=>largeStyles({large: p.large})}
 
     box-shadow: none;
     border: none;

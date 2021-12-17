@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 
 import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
-import { } from '../client_types'
+import { Users } from '../client_types'
 import { APIService } from '../services/APIService';
 import { PageLayout, Input, PasswordInput, Button, Spinner } from '../components/common'
 import styled from 'styled-components'
@@ -34,20 +34,22 @@ const Form = styled.form`
     }
 
 `
-// Form.propTypes = {
-//    string
-// }
+
 
 let timeout;
 
 
 
+const Login = () => {
 
+    let nav = useNavigate();
+    const [isAuthed, setIsAuthed] = useState(null);
+    const loc = useLocation()
 
-
-const Login = (LoginProps) => {
-
-    const [formFields, setFormFields] = useState({ email: string, password: string });
+    const [formFields, setFormFields] = useState<Users>({
+        email: '',
+        password: ''
+    });
 
     const [loading, setLoading] = useState(false);
 
@@ -60,31 +62,24 @@ const Login = (LoginProps) => {
 
     }
 
-
-
-
-
-
-    // Q: should I be using TS here?
+ 
 
     const handleSubmit = (e: React.MouseEvent<HTMLFormElement>) => {
         e.preventDefault();
         setLoading(true)
 
-        // console.log(`email: ${formFields.email}`);
-        // console.log(`password: ${formFields.password}`);
-        // console.log(`${formFields}`);
-        const { email, password } = formFields;
+
+        // const { email, password } = formFields;
 
 
         // timeout = setTimeout(() => {
         //     setLoading(false)
         // }, 2000)
 
-        if (!formFields.email || formFields.password == null)
+        if (!formFields.email || !formFields.password)
             return alert('Fill out all fields!🤦🏻‍♂️');
 
-        APIService('/auth/login', 'POST', { email, password })
+        APIService('/auth/login', 'POST', formFields)
             //        APIService('/auth/login', 'POST', { formFields })
 
 
@@ -96,25 +91,14 @@ const Login = (LoginProps) => {
             })
             .catch(e => console.log(e))
 
-
-
-
-
     }
 
 
 
-    let nav = useNavigate();
-    const [isAuthed, setIsAuthed] = useState(null);
-    const loc = useLocation()
-
-    const [email, setEmail] = useState<string>('');
-    const [password, setPassword] = useState<string>('');
 
 
-
-
-
+    // const [email, setEmail] = useState<string>('');
+    // const [password, setPassword] = useState<string>('');
 
 
 
@@ -128,48 +112,51 @@ const Login = (LoginProps) => {
             <div className="row justify-content-center">
 
 
-            <Form onSubmit={handleSubmit}>
+                <Form onSubmit={handleSubmit}>
 
-                {/* add ternary logic for loading state */}
-                {/* {loading ? <Spinner /> : */}
-                <>
-                    <span>Login if you have an account</span>
+                    {/* add ternary logic for loading state */}
+                    {/* {loading ? <Spinner /> : */}
+                    <>
+                        <span>Login if you have an account</span>
 
 
-                    <Input
-                        value={formFields.email}
-                        onChange={handleInputChange}
-                        name="email"
-                        type="text"
-                        placeholder="Email"
-                    />
+                        <Input
+                            value={formFields.email}
+                            onChange={handleInputChange}
+                            name="email"
+                            type="text"
+                            placeholder="Email"
+                        />
 
-                    <PasswordInput
-                        value={formFields.password}
-                        onChange={handleInputChange}
-                        name="password"
-                        type="password"
-                    />
-                </>
-                {/* } */}
-                <Button large type="submit" disabled={loading}>
-                    {loading ? 'Loading...' : 'Login'}
-                </Button>
+                        <PasswordInput
+                            value={formFields.password}
+                            onChange={handleInputChange}
+                            name="password"
+                            type="password"
+                        />
+                    </>
+                    {/* } */}
+                    <Button large type="submit" disabled={loading}>
+                        {loading ? 'Loading...' : 'Login'}
+                    </Button>
 
-                {/* {!loading && */}
-                <>
-                    <div className="alt-text">
-                        or
+                    {/* {!loading && */}
+                    <>
+                        <div className="alt-text">
+                            or
                         </div>
-                    <Button secondary type="button" onClick={() => nav("/register")}>
-                        Register
-                            </Button>
-                </>
-                {/* } */}
+                        <Button 
+                        secondary type="button" 
+                        onClick={() => nav("/register")}
+                        >
+                            Register
+                        </Button>
+                    </>
+                    {/* } */}
 
 
 
-            </Form>
+                </Form>
 
             </div>
 
@@ -180,7 +167,7 @@ const Login = (LoginProps) => {
 }
 
 
-interface LoginProps {
+export interface LoginProps {
 
     email?: string;
     password?: string;

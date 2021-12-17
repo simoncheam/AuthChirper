@@ -49,8 +49,8 @@ interface MenuProps {
 
 const Link = ({ isActive, children, ...props }) => {
     return (
-        //@ts-ignore  Q: how do we fix this?
-        <ReactRouterDomLink {...props}>
+        
+        <ReactRouterDomLink to={props.to} {...props}>
             {children}
         </ReactRouterDomLink>
     )

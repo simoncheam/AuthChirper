@@ -18,19 +18,24 @@ export function tokenCheck(req: ReqUser, res: Response, next: NextFunction) {
             });
         }
 
+        // !!! add in edge case check where user may not exist
         if(!user) {
 
             return res.redirect('/login')
 
         }
 
-        // !!! add in edge case check where user may not exist
 
         if(user) {
 
+            delete user.password;
+            console.log('INSIDE TOKENCHECK if(user) block:');
+            console.log(`user.userid: ${user.userid}`);
+            
+            console.log(`user.id: ${user.id}`);
+            
             console.log('Token is good!');
             req.user = user;
-            delete req.user.password;
         }
         next();
 

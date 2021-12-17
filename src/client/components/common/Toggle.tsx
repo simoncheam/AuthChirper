@@ -9,7 +9,7 @@ const ToggleWrapper = styled.div`
     border: 1px solid #666;
     margin: auto;
     display: flex;
-    background-image: linear-gradient( to bottom, ${p => p.theme.primaryColor}, ${p=> p.theme.secondaryColor});
+    background-image: linear-gradient(to bottom, ${p => p.theme.primaryColor}, ${p => p.theme.secondaryColor});
     
 `
 

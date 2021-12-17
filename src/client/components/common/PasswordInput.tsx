@@ -37,7 +37,7 @@ const ToggleButton = styled.div`
 
 
 const PasswordInput = (props) => {
-    const [showPassword, setShowPassword] = useState(true)
+    const [showPassword, setShowPassword] = useState(false)
 
     return (
         <>

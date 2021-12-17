@@ -7,7 +7,7 @@ const app = express();
 import {configurePassport} from '../server/middleware/passport-strats.mw'
 
 configurePassport(app); // !import mw function - TS side effect
-app.use(passport.initialize());
+
 
 
 

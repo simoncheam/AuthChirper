@@ -16,7 +16,8 @@ export function configurePassport(app: Application) {
         done(null, user);
     });
 
-    passport.deserializeUser((user, done) => {
+    passport.deserializeUser((user: Users, done) => {
+        if (user?.password) delete user.password;
         done(null, user)
     });
 
@@ -37,7 +38,7 @@ export function configurePassport(app: Application) {
 
                     if (!user) return done({ message: " invalid credentials" }, false);
 
-                    // Q: compare of comparesync? A: use compare which is async
+                    
                     const isMatch = await bcrypt.compare(password, user?.password);
 
                     console.log('BCRYPT - compare');

@@ -15,13 +15,21 @@ export interface Users {
 
 export interface Chirps {
     id?: number;
-    title?: string;
     content?: string;
     location?: string;
     userid: number;
     _created?: string;
     
 }
+
+export interface CreateChirps {
+    content?: string;
+    location?: string;
+    tagid?: number; 
+}
+
+
+
 
 export interface Tags {
     id?: number;

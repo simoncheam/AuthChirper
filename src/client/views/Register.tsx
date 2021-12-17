@@ -31,7 +31,7 @@ const Register = () => {
         if (!userName || !email || password == null)
             return alert('Fill out the fields please 🤦🏻‍♂️');
 
-        // Q: how to fix?
+        
         APIService("/auth/register", 'POST', {
             name: userName,
             email: email,

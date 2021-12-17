@@ -45,7 +45,7 @@ const Home = () => {
     return (
         <PageLayout>
             <h1 className="display-3 m-10 text-center">Home</h1>
-            {chirps.reverse().map(chirp => (
+            {chirps.map(chirp => (
 
                 <Card
                     key={`chirp-${chirp.id}`}

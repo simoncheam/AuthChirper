@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 
 
-const Card = ({  id, userid, content, location, _created, username  }) => {
+const Card = ({  chirp_id, content, location, _created, username, tag_name  }) => {
 
 
     return (
@@ -15,21 +15,22 @@ const Card = ({  id, userid, content, location, _created, username  }) => {
 
                 {/* {chirps.reverse().map(chirp => ( */}
 
-                    <div key={`chirp-${id}`} className="row justify-content-center">
+                    <div key={`chirp-${chirp_id}`} className="row justify-content-center">
 
                         <div className="card col-12 col-md-6 shadow-lg m-3">
                             <h5 className="card-header"> {_created} </h5>
                             <div className="card-body">
-                                <h5 className="card-title">{content} </h5>
+                                <h5 className="card-title">{content} #{tag_name}</h5>
                                 <p className="card-text">{location}</p>
                                 <footer className="blockquote-footer">
-                                    {userid}
-                                    {username} 
+                                    
+                                created by: {username} 
                                 
                                 </footer>
+                                
 
-                                <Link to={`/chirps/${id}/`} className="btn mx-2 btn-primary">
-                                    Read More
+                                <Link to={`/chirps/${chirp_id}/edit`} className="btn mx-2 btn-primary">
+                                    Edit?
                                 </Link>
                             </div>
                         </div>

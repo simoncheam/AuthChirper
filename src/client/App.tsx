@@ -14,6 +14,8 @@ import DarkTheme from './themes/dark';
 import Home from './views/Home';
 import { string } from 'prop-types';
 import Create from './views/Create';
+import ChirpDetail from './views/ChirpDetail';
+import Edit from './views/Edit';
 
 const theme = {
 //	primaryColor: '#f8049c',
@@ -85,6 +87,13 @@ const App = () => {
 
 							{/* Create */}
 							<Route path="/create" element={<Create />}></Route>
+
+							{/* chirpDetail */}
+							<Route path="/chirps/:chirp_id" element={<ChirpDetail />}></Route>
+
+							{/* edit */}
+							<Route path="/chirps/:chirp_id/edit" element={<Edit />}></Route>
+
 
 							{/* NotFound */}
 							<Route path="*" element={<NotFound />}></Route>

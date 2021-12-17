@@ -2,12 +2,12 @@ import React from 'react'
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-import { Chirps, Tags } from '../client_types'
+import { Chirps, CreateChirps, Tags } from '../client_types'
 import { Button, Input, PageLayout } from '../components/common';
 import { APIService } from '../services/APIService';
-import { string } from 'prop-types';
 
-const Form = styled.form`
+
+export const Form = styled.form`
     width: 100%;
     max-width: 400px;
     background: white;
@@ -36,39 +36,37 @@ const Form = styled.form`
 const Create = () => {
 
     // State Setting      ------------------------
+    let nav = useNavigate();
+    const loc = useLocation();
 
-    //Q: clarify for using for multiple routes? chirps and tags, is it appropriate to combine or separate
+    // clarify for using for multiple routes? chirps and tags, is it appropriate to combine or separate
 
-    const [formFields, setFormFields] = useState({
-         content: string, 
-         tag: 0, 
-         location: string });
+    const [formFields, setFormFields] = useState<CreateChirps>({
+         content: '', 
+         tagid: 0, 
+         location: '' });
 
     const [loading, setLoading] = useState(false);
-   // const [selectedTagId, setSelectedTagId] = useState(0);
-    
     const [tags, setTags] = useState<Tags[]>([]);
-
-
+   
+    
     //const [isAuthed, setIsAuthed] = useState(null);
 
-    let nav = useNavigate();
-    const loc = useLocation()
 
     //   Handle Input Change    ------------------------
 
-    //Q: clarify configuration handling multiple states
+    
 
     const handleInputChange = (e) => {
         e.persist();
         setFormFields(s => ({
-            ...s,
-            [e.target.name]: e.target.value
+            ...s,  //previous fields
+            [e.target.name]: e.target.value,
         }))
-        
+        console.log(formFields.tagid)
+        console.log(formFields.content);
     }
-    setSelectedTagId(Number(e.target.value))
-    console.log('dgdzrfg');
+  
 
     //                 ------------------------
 
@@ -77,10 +75,9 @@ const Create = () => {
     
     useEffect(() => {
 
-
         APIService(`/api/tags`)
         .then((t) => {
-            setTag(t)
+            setTags(t)
         })
         .catch(e => console.log(e))
 
@@ -93,18 +90,17 @@ const Create = () => {
         e.preventDefault();
         setLoading(true)
 
-        const { content, tag, location } = formFields;
+       console.log(formFields.content);
+       console.log(formFields.tagid);
 
-        if (!content || !tag)
+
+        if (!formFields.content || !formFields.tagid)
             return alert('content or tag fields missing!');
 
         APIService('/api/chirps', 'POST',
-            {
-
-                content: content,
-                location: location,
-                tagid: selectedTagId
-            })
+            
+            formFields
+        )
             .then(data => {
                 console.log(data);
                 nav(`/`)
@@ -138,23 +134,16 @@ const Create = () => {
                         placeholder="your chirp"
                     />
 
-
                     {/* tag */}
-                    {/* <Input
-                        value={formFields.tag}
-                        onChange={handleInputChange}
-                        name="tag"
-                        type="text"
-                        placeholder="Add a #hashtag!"
-                    /> */}
+                
 
                     <label className="row" >🏷 Tag</label>
-                    <select value={selectedTagId} onChange={handleInputChange} className="form-control">
+                    <select value={formFields.tagid} onChange={handleInputChange} className="form-control" name = "tagid">
 
                         <option value={0}> Select a Tag for your Chirp</option>
 
-                        {tag.map(t => (
-                            <option key={`tag-option-${t.id}`} value={t.id}>
+                        {tags.map(t => (
+                            <option key={`tag-option-${t.id}`} value={Number(t.id)} >
 
                                 #{t.name}
                             </option>
