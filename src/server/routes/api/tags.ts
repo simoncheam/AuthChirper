@@ -1,5 +1,6 @@
 import * as express from 'express';
 import tagsDB from '../../database/queries/tags';
+import { tokenCheck } from '../../middleware/tokenCheck.mw';
 import { ReqUser, Tags } from '../../types';
 
 // import {tokenCheck} from '../../middlewares/tokenCheck.mw'
@@ -22,7 +23,7 @@ router.get('/', async (req, res) => {
 });
 
 
-router.post('/', async (req: ReqUser, res) => {
+router.post('/',tokenCheck, async (req: ReqUser, res) => {
 
 
     const { name }: Tags = req.body;
@@ -32,8 +33,16 @@ router.post('/', async (req: ReqUser, res) => {
     }
 
     try {
-        await tagsDB.create({ name });
-        res.status(201).json({ message: "Tag created" });
+        const newTagResults = await tagsDB.create({ name });
+
+        if(newTagResults.affectedRows){
+
+                res.status(201).json({ message: "Tag created" });
+        } else {
+
+            res.status(400).json({ message: "Not able to create tag, please check name and try again!" });
+
+        }
 
     } catch (error) {
         res.status(500).json({ message: " A server error occurred", error: error.sqlMessage });

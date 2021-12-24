@@ -44,6 +44,7 @@ export interface ChirpTags {
 
 
 export interface ChirpsJoined {
+    location?: string;
     id?: number;
     tag_id: number;
     tag_name: string;

@@ -1,8 +1,9 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 
 import styled, { ThemeContext } from 'styled-components'; //lets us have access to theme from within header componenet
-import { Link as ReactRouterDomLink, useLocation } from 'react-router-dom';
+import { Link as ReactRouterDomLink, useLocation, useNavigate } from 'react-router-dom';
 import { Toggle } from './Toggle'
+import { APIService } from '../../services/APIService';
 
 const HeaderWrapper = styled.header`
     height: 60px;
@@ -49,7 +50,7 @@ interface MenuProps {
 
 const Link = ({ isActive, children, ...props }) => {
     return (
-        
+
         <ReactRouterDomLink to={props.to} {...props}>
             {children}
         </ReactRouterDomLink>
@@ -95,8 +96,35 @@ const Header = () => {
     const { pathname } = useLocation();
 
     const [menuOpen, setMenuOpen] = useState(false)
+    const [isAuthed, setIsAuthed] = useState(null);
+    const loc = useLocation()
+    let nav = useNavigate();
+
+
 
     const { id, setTheme } = useContext(ThemeContext);
+
+    useEffect(() => {
+
+        APIService(`/auth/validate`)
+            .then(res => {
+                const tokenStatus = res.one_user ? true : false;
+                setIsAuthed(tokenStatus)
+            })
+            .catch(e => {
+                setIsAuthed(false)
+                console.log('Your token is bad!');
+                console.log(e);
+                nav(`/login`)
+
+
+            })
+
+    }, [loc.pathname])
+
+
+
+
 
     return (
 
@@ -113,17 +141,48 @@ const Header = () => {
                 <StyledLink to="/" isActive={pathname === '/'}>
                     Home
                 </StyledLink>
-                <StyledLink to="/login" isActive={pathname === '/login'} >
-                    Login
-                </StyledLink>
 
-                <StyledLink to="/create" isActive={pathname === '/create'} >
-                    Create
-                </StyledLink>
+                {!isAuthed && (
+
+                    <StyledLink to="/login" isActive={pathname === '/login'} >
+                        Login
+                    </StyledLink>
+                )}
+
+                {isAuthed && (
+
+                    <StyledLink to="/create" isActive={pathname === '/create'} >
+                        Create
+                    </StyledLink>
+                )}
 
 
 
-            {/* If logged in show additional links */}
+                {/* {isAuthed && (
+
+                    <StyledLink to="/createTag" isActive={pathname === '/createTag'} >
+                        Create Tag
+                    </StyledLink>
+
+                )} */}
+
+                {isAuthed && (
+
+                    <StyledLink to="/private" isActive={pathname === '/private'} >
+                        Private
+                    </StyledLink>
+                )}
+
+                {isAuthed && (
+
+                    <StyledLink to="/users" isActive={pathname === '/users'} >
+                        Users
+                    </StyledLink>
+                )}
+
+
+
+                {/* If logged in show additional links */}
 
 
 

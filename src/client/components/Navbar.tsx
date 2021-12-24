@@ -28,7 +28,7 @@ const Navbar = () => {
     return (
         <div className="bg-dark">
 
-            <Link type="button" className="m-2 btn btn-outline-primary " to="/"> Home </Link>
+            <Link type="button" className="m-2 btn btn-outline-primary " to="/"> Home -TEST </Link>
 
             <Link type="button" className="m-2 btn btn-outline-primary " to="/register"> Register </Link>
 

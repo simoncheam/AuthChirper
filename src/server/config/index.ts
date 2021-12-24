@@ -13,7 +13,6 @@ export const database_config = {
 export const jwt_config = {
 
 	secret: process.env.JWT_SECRET,
-	signature: process.env.JWT_SIGNATURE,
 	expiration: process.env.JWT_EXPIRATION
 };
 

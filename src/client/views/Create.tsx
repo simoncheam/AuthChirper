@@ -150,6 +150,13 @@ const Create = () => {
                         ))}
                     </select>
 
+                    <label className="row mt-2" >Don't see the tag you want?</label>
+                    <Link to={`/createTag`} className="btn m-2 btn-secondary">
+                        
+                        Click here to Create your Own!🏷
+                    </Link>
+
+
 
 
 

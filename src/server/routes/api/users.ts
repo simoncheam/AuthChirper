@@ -5,6 +5,8 @@
 import * as express from 'express';
 import { Users } from '../../types'
 import usersDB from '../../database/queries/users';
+import chirpsDB from '../../database/queries/chirps';
+
 import { ReqUser } from '../../types';
 
 // import { tokenCheck } from '../../middlewares/tokenCheck.mw';
@@ -42,22 +44,34 @@ router.get('/:user_id', async (req: ReqUser, res) => {
 
 
     const id = req.params.user_id;
-    console.log('GET user by ID!');
+    // console.log('GET user by ID!');
+    // console.log(`id inside api router: ${id}`);
 
 
     try {
 
         const [one_user] = await usersDB.get_one_by_id(Number(id));
+        delete one_user.password;
+        //one_user._created.split('T')[0];
+
+        const one_user_chirps = await chirpsDB.get_all_by_userid(Number(id));
+
+        let user_chirps = one_user_chirps[0]
+        console.log('one_user_chirps:');
+
+        console.log(user_chirps);
+
+
+
 
         if (!one_user) {
             res.status(404).json({ message: "User not found!" })
 
         } else {
 
-            delete one_user.password;
-            console.log(one_user);
+            // console.log(one_user);
 
-            res.status(200).json({ message: `User Found! `, one_user });
+            res.status(200).json({ message: `User Found! `, one_user, user_chirps });
         }
 
     } catch (error) {

@@ -9,7 +9,10 @@ const create = (new_chirp: Chirps) => {
 
 
 const get_all = () => Query<Chirps[]>
-    (`SELECT * FROM Chirps`);
+    (`SELECT * FROM Chirps
+    ORDER BY _created DESC`);
+
+
 
 //DONE
 const get_one_by_id = (id:number)=>Query<[ChirpsJoined[], MysqlResponse]>

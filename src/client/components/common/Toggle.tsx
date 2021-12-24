@@ -1,5 +1,5 @@
-import styled, {keyframes} from 'styled-components';
-import React, {useState, useEffect} from 'react'
+import styled, { keyframes } from 'styled-components';
+import React, { useState, useEffect } from 'react'
 
 const ToggleWrapper = styled.div`
     width: 50px;
@@ -21,20 +21,20 @@ const Notch = styled.div<NotchProps>`
     background: white;
     border-radius: 50%;
     transition: transform 0.1s linear;
-    transform: translate( ${ p=> p.isActive ? '26px' : '1px'})
+    transform: translate( ${p => p.isActive ? '26px' : '1px'})
 
 `
 interface NotchProps {
     isActive?: boolean
 }
 
-const Toggle = ({isActive, onToggle}) => {
+const Toggle = ({ isActive, onToggle }) => {
     return (
         <ToggleWrapper onClick={onToggle}>
-            <Notch isActive ={isActive}/>
-            
+            <Notch isActive={isActive} />
+
         </ToggleWrapper>
     )
 }
 
-export {Toggle}
+export { Toggle }

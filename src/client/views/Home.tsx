@@ -24,16 +24,7 @@ const Home = () => {
                 console.log(error);
             });
 
-        // APIService(`/auth/validate`)
-        //     .then(res => {
-        //         const tokenStatus = res.one_user ? true : false;
-        //         setIsAuthed(tokenStatus)
-        //     })
-        //     .catch(e => {
-        //         setIsAuthed(false)
-        //         console.log('bad token!');
-        //         console.log(e);
-        //     })
+      
 
 
     }, [loc.pathname])
@@ -44,7 +35,8 @@ const Home = () => {
 
     return (
         <PageLayout>
-            <h1 className="display-3 m-10 text-center">Home</h1>
+            
+            <h1 className="display-1 m-10 text-center">Home</h1>
             {chirps.map(chirp => (
 
                 <Card
@@ -54,13 +46,12 @@ const Home = () => {
                     content={chirp.content}
                     location={chirp.location}
                     _created={chirp._created}
+                    
                 />
 
             ))}
 
-            <p>
-                Lorem
-            </p>
+            
 
         </PageLayout>
     )

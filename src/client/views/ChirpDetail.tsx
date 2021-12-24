@@ -50,10 +50,6 @@ const ChirpDetail = () => {
 
 
 
-
-
-
-
     }, [loc.pathname])
 
     if (!chirp) { return <h1>LOADING...</h1> }
@@ -69,10 +65,10 @@ const ChirpDetail = () => {
                 username={chirp.u_name}
                 _created={chirp.chirp_created}
                 tag_name={chirp.tag_name}
+                location={chirp.location}
 
-            >
+            />
 
-            </CardDetail>
             <div onClick={() => nav(-1)} className="btn mx-2 btn-primary">
                 Go Back?
             </div>

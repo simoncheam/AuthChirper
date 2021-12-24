@@ -1,11 +1,15 @@
-import React from 'react'
+import * as dayjs from 'dayjs'
+import React, { useContext } from 'react'
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { ThemeContext } from 'styled-components';
 
 
 
 
-const Card = ({  id, userid, content, location, _created, username  }) => {
+const Card = ({  id, userid, content, location, _created, tag_name }) => {
+
+    //const { id, setTheme } = useContext(ThemeContext);
+
 
 
     return (
@@ -18,15 +22,15 @@ const Card = ({  id, userid, content, location, _created, username  }) => {
                     <div key={`chirp-${id}`} className="row justify-content-center">
 
                         <div className="card col-12 col-md-6 shadow-lg m-3">
-                            <h5 className="card-header"> {_created} </h5>
+                            <h5 className="card-header mt-2"> {dayjs(_created).format('ddd MM/DD/YY @ hh:mm a')} </h5>
                             <div className="card-body">
                                 <h5 className="card-title">{content} </h5>
                                 <p className="card-text">{location}</p>
-                                <footer className="blockquote-footer">
+                                {/* <footer className="blockquote-footer">
                                     {userid}
-                                    {username} 
+                                 
                                 
-                                </footer>
+                                </footer> */}
 
                                 <Link to={`/chirps/${id}/`} className="btn mx-2 btn-primary">
                                     Read More
@@ -46,7 +50,9 @@ const StyledCard = styled.article`
 
 /* width: 90vw;
 max-width:  300px; */
-//background: var(--white)
+
+
+background: var(--white)
 
 footer{
     display: flex;

@@ -12,12 +12,7 @@ const Edit = () => {
     let params = useParams();
     let nav = useNavigate();
     //        ------------------------
-    /*
-    params
-    const
-    state
     
-    */
 
     const chirp_id = params.chirp_id;
     const [isAuthed, setIsAuthed] = useState(null);
@@ -90,8 +85,7 @@ const Edit = () => {
         e.preventDefault();
         setLoading(true)
 
-        console.log(formFields.content);
-        console.log(formFields.tagid);
+       
 
 
         if (!formFields.content || !formFields.tagid)
@@ -137,6 +131,7 @@ const Edit = () => {
             .catch(e => {
                 console.log(e)
                 alert(e)
+                nav(`/login`);
             })
     }
 
@@ -189,7 +184,7 @@ const Edit = () => {
                     <div className="m-2">
 
                         <Button large type="submit" disabled={loading}>
-                            {loading ? 'Updating...' : 'Post Your Chirp'}
+                            {loading ? 'Updating...' : 'Update Your Chirp'}
                         </Button>
                         <div className="m-2"></div>
 

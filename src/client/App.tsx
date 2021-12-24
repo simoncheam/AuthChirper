@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useSearchParams } from 'react-router-dom';
 import { createGlobalStyle, ThemeProvider } from 'styled-components';
 
 import Navbar from './components/Navbar';
@@ -16,9 +16,15 @@ import { string } from 'prop-types';
 import Create from './views/Create';
 import ChirpDetail from './views/ChirpDetail';
 import Edit from './views/Edit';
+import PrivateRoute from './components/common/PrivateRoute';
+import Private from './views/Private';
+import CreateTag from './views/CreateTag';
+import UserOverview from './views/UserOverview';
+import Search from './views/Search';
+import UserDetail from './views/UserDetail';
 
 const theme = {
-//	primaryColor: '#f8049c',
+	//	primaryColor: '#f8049c',
 	primaryColor: '#0091ea',
 
 	secondaryColor: '#ffa500'
@@ -31,7 +37,7 @@ const GlobalStyle = createGlobalStyle<ThemeProps>`
 
 body{
   
-  background: ${p => p.theme.bodyBackgroundColor };
+  background: ${p => p.theme.bodyBackgroundColor};
   min-height: 100vh;
   margin: 0;
   color: ${p => p.theme.bodyFontColor};
@@ -41,10 +47,10 @@ body{
 `;
 
 interface ThemeProps {
-	
+
 	bodyBackgroundColor?: string,
 	bodyFontColor?: string,
-	
+
 
 };
 
@@ -59,53 +65,85 @@ const App = () => {
 
 
 	return (
-		
-			<ThemeProvider theme={{
-				...theme, setTheme: () => {
-					setTheme(s => s.id === 'light' ? DarkTheme : LightTheme);
-				}
-			}} >
+
+		<ThemeProvider theme={{
+			...theme, setTheme: () => {
+				setTheme(s => s.id === 'light' ? DarkTheme : LightTheme);
+			}
+		}} >
 
 
 
-				<GlobalStyle />
-				<BrowserRouter>
-					{/* <Navbar /> */}
+			<GlobalStyle />
 
-					
-						<Routes>
+			<BrowserRouter>
+				{/* <Navbar /> */}
 
 
-							{/* Home */}
-							<Route path="/" element={<Home />}></Route>
-
-							{/* Register */}
-							<Route path="/register" element={<Register />}></Route>
-
-							{/* Login */}
-							<Route path="/login" element={<Login />}></Route>
-
-							{/* Create */}
-							<Route path="/create" element={<Create />}></Route>
-
-							{/* chirpDetail */}
-							<Route path="/chirps/:chirp_id" element={<ChirpDetail />}></Route>
-
-							{/* edit */}
-							<Route path="/chirps/:chirp_id/edit" element={<Edit />}></Route>
+				<Routes>
 
 
-							{/* NotFound */}
-							<Route path="*" element={<NotFound />}></Route>
+					{/* Home */}
+					<Route path="/" element={<Home />}></Route>
 
-						</Routes>
+					{/* Register */}
+					<Route path="/register" element={<Register />}></Route>
+
+					{/* Login */}
+					<Route path="/login" element={<Login />}></Route>
+
+					{/* Create */}
+					<Route path="/create" element={<Create />}></Route>
+					<Route path="/createTag" element={<CreateTag />}></Route>
+
+					{/* search */}
+					<Route path="/search" element={<Search />}></Route>
 
 
-					
-				</BrowserRouter>
-			</ThemeProvider>
 
-		
+
+
+					{/* Private Route */}
+					<Route path="/private" element={<PrivateRoute />}>
+						{/* private has button panels */}
+						<Route index element={<Private />} />
+						{/* <Route path="secret1" element={< />} />
+						<Route path="vip" element={<OptIn />} /> */}
+						 {/* <Route path="users" element={<AuthorOverview />} /> */}
+					</Route>
+
+
+
+
+					{/* chirpDetail */}
+					<Route path="/chirps/:chirp_id" element={<ChirpDetail />}></Route>
+
+					{/* edit */}
+					<Route path="/chirps/:chirp_id/edit" element={<Edit />}></Route>
+
+
+					{/* users */}
+					<Route path="/users" >
+						<Route index element={<UserOverview />} />
+						<Route path=":user_id" element={<UserDetail />} />
+
+					</Route>
+
+
+
+
+
+					{/* NotFound */}
+					<Route path="*" element={<NotFound />}></Route>
+
+				</Routes>
+
+
+
+			</BrowserRouter>
+		</ThemeProvider>
+
+
 	)
 }
 
