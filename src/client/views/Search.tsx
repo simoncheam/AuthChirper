@@ -6,6 +6,15 @@ import { Button, Input, PageLayout } from '../components/common';
 import { APIService } from '../services/APIService';
 import { Form } from './Create';
 
+import {
+    createStyles,
+    fade,
+    Theme,
+    makeStyles,
+} from '@material-ui/core/styles';
+import SearchIcon from '@material-ui/core/Icon';
+import InputBase from '@material-ui/core/InputBase';
+
 const Search = () => {
 
     let nav = useNavigate();
@@ -13,11 +22,11 @@ const Search = () => {
     // State tags, chirps, users       ------------------------
     const [tags, setTags] = useState<Tags[]>([]);
     const [users, setUsers] = useState<Users[]>([]);
-    
+
     const [chirps, setChirps] = useState<Chirps[]>([]);
     const [results, setResults] = useState<Chirps[]>([]);
     const [searchTerm, setSearchTerm] = useState("");
-    
+
     const [searchStatus, setSearchStatus] = useState(false);
 
 
@@ -40,29 +49,10 @@ const Search = () => {
     };
 
 
+    // chirps is the array we care about
 
+    // 1 - UE fires once - APIservice sets initial date
     useEffect(() => {
-
-        //filter for matches on searchTerm update
-        const getMatches = getChirps(searchTerm);
-        setResults(getMatches);
-
-
-    }, [searchTerm])
-
-
-
-
-    useEffect(() => {
-
-        APIService('/api/tags')
-            .then(t => setTags(t))
-            .catch(e => {
-                setSearchStatus(false)
-                console.log(e)
-            })
-
-
         APIService(`/api/chirps`)
             .then(data => {
                 setChirps(data);
@@ -70,32 +60,46 @@ const Search = () => {
             .catch(error => {
                 console.log(error);
                 setSearchStatus(false)
-
             });
-
+        APIService('/api/tags')
+            .then(t => setTags(t))
+            .catch(e => {
+                setSearchStatus(false)
+                console.log(e)
+            })
         APIService(`/api/users`)
             .then(data => {
                 setUsers(data);
             })
             .catch(error => {
                 setSearchStatus(false)
-
                 console.log(error);
             });
 
-        // Add auth/validate router?
-
-
+        // Add auth/validate route?
 
     }, []);
 
+    // 2 - UE fires w/ search term update & sets Results
+    useEffect(() => {
 
-    if (!users || !chirps || !tags) { return <h1>LOADING...</h1> }
+        //filter for matches on searchTerm update
+        const getMatches = getChirps(searchTerm);
+        setResults(getMatches);
+    }, [searchTerm])
 
+
+    // 3- getChirps function receives search term, returns a match via filter method
     const getChirps = (name: string) => {
-        const matches = chirps.filter(chirp => chirp.content.toLowerCase().includes(name.toLowerCase()) || chirp.location.toLowerCase().includes(name.toLowerCase()))
+        const matches = chirps.filter(chirp =>
+            chirp.content.toLowerCase().includes(name.toLowerCase()) ||
+            chirp.location.toLowerCase().includes(name.toLowerCase()))
         return matches;
     }
+
+
+    if (!users || !chirps || !tags) { return <h1>LOADING...</h1> }
+    // createCardsFrom @1:20 12/20 webinar
 
     return (
         <PageLayout>
@@ -131,8 +135,8 @@ const Search = () => {
 
                 </Form>
                 <h1 className="display-3 m-10 text-center">Your Search Results:</h1>
-                
-                
+
+
                 <div className="row justify-content-center">
                     {!searchTerm &&
 
