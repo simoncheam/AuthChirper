@@ -180,6 +180,13 @@ const Header = () => {
                     </StyledLink>
                 )}
 
+                {isAuthed && (
+
+                    <StyledLink to="/muidemo" isActive={pathname === '/muidemo'} >
+                        MUI Demo
+                    </StyledLink>
+                )}
+
 
 
                 {/* If logged in show additional links */}

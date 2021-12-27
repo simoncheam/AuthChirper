@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route, useSearchParams } from 'react-router-dom'
 import { createGlobalStyle, ThemeProvider } from 'styled-components';
 
 import Navbar from './components/Navbar';
-import Chirps from './views/Chirps';
+//import Chirps from './views/Chirps';
 import Login from './views/Login';
 import NotFound from './views/NotFound';
 import Register from './views/Register';
@@ -22,6 +22,7 @@ import CreateTag from './views/CreateTag';
 import UserOverview from './views/UserOverview';
 import Search from './views/Search';
 import UserDetail from './views/UserDetail';
+import AppMUI_test from './views/AppMUI_test';
 
 const theme = {
 	//	primaryColor: '#f8049c',
@@ -98,6 +99,9 @@ const App = () => {
 
 					{/* search */}
 					<Route path="/search" element={<Search />}></Route>
+
+					<Route path="/muidemo" element={<AppMUI_test />}></Route>
+
 
 
 

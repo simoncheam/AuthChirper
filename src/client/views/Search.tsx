@@ -24,7 +24,7 @@ const Search = () => {
     const [users, setUsers] = useState<Users[]>([]);
 
     const [chirps, setChirps] = useState<Chirps[]>([]);
-    const [results, setResults] = useState<Chirps[]>([]);
+    const [searchResults, setSearchResults] = useState<Chirps[]>([]);
     const [searchTerm, setSearchTerm] = useState("");
 
     const [searchStatus, setSearchStatus] = useState(false);
@@ -35,18 +35,18 @@ const Search = () => {
     const [loading, setLoading] = useState(false);
 
 
-    const handleSubmit = (e: React.MouseEvent<HTMLFormElement>) => {
-        e.preventDefault();
+    // const handleSubmit = (e: React.MouseEvent<HTMLFormElement>) => {
+    //     e.preventDefault();
 
-        if (!searchTerm) return alert('Fill out the fields!')
-
-
-        // data that includes searchterm
-
-        // Call search function
+    //     if (!searchTerm) return alert('Fill out the fields!')
 
 
-    };
+    //     // data that includes searchterm
+
+    //     // Call search function
+
+
+    // };
 
 
     // chirps is the array we care about
@@ -83,13 +83,19 @@ const Search = () => {
     // 2 - UE fires w/ search term update & sets Results
     useEffect(() => {
 
-        //filter for matches on searchTerm update
+        //filter for matches on searchTerm update - runs on each keystroke
         const getMatches = getChirps(searchTerm);
-        setResults(getMatches);
+        setSearchResults(getMatches);
+
+
     }, [searchTerm])
 
 
-    // 3- getChirps function receives search term, returns a match via filter method
+    /* 3
+    - getChirps function receives search term 
+    - returns a match via filter method
+    
+    */
     const getChirps = (name: string) => {
         const matches = chirps.filter(chirp =>
             chirp.content.toLowerCase().includes(name.toLowerCase()) ||
@@ -107,7 +113,7 @@ const Search = () => {
 
             <div className="row justify-content-center">
 
-                <Form onSubmit={handleSubmit} >
+                <Form  >
                     <span>What are you looking for?</span>
 
                     {/* tag */}
@@ -121,15 +127,15 @@ const Search = () => {
 
                         name="content"
                         type="text"
-                        placeholder="search by tag, user, or content..."
+                        placeholder="start typing to narrow results..."
                         maxLength={36}
                     />
 
 
 
-                    <Button large type="submit" disabled={loading}>
+                    {/* <Button large type="submit" disabled={loading}>
                         {loading ? 'Searching...' : 'Search'}
-                    </Button>
+                    </Button> */}
 
 
 
@@ -138,10 +144,24 @@ const Search = () => {
 
 
                 <div className="row justify-content-center">
-                    {!searchTerm &&
+                    {!searchTerm && !searchTerm.length &&
+                        chirps.map(chirp => (
+                            <div key={`chirp-id-${chirp.id}`} className="card">
+                                <h1>{chirp.id}</h1>
+                                <p>{chirp.content}</p>
 
-                    
-                    }
+                            </div>
+                        ))}
+
+                    {searchResults.length &&
+                        searchResults.map(chirp => (
+                            <div key={`chirp-id-${chirp.id}`} className="card">
+                                <h1>{chirp.id}</h1>
+                                <p>{chirp.content}</p>
+
+                            </div>
+                        ))}
+
 
 
                 </div>
